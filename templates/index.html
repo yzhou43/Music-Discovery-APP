@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
+  <head>
+    <link rel="stylesheet" href={{ url_for('static', filename='style.css')}} />
+  </head>
   <body>
-      <h1>Hello World!</h1>
+    <h1>{{name}}</h1>
+    <p>{{artist}}</p>
+    <img src="{{img}}" alt="{{name}}" />
+    {% if preview|string() != 'None'|string() %}
+    <figure>
+      <figcaption>Listen to the preview:</figcaption>
+      <audio
+        controls
+        src="{{preview}}"
+      >
+        Your browser does not support the
+        <code>audio</code> element.
+      </audio>
+    </figure>
+    {% else %}
+    <p>Preview is not available</p>
+    {% endif %}
+    <p class="lyrics">Click here to see the lyrics!</p>
   </body>
 </html>
