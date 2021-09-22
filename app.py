@@ -41,18 +41,23 @@ app = flask.Flask(__name__)
 def main():
     # Get an Artist's Top Tracks
     rand_artist = random.randint(0, len(artists)-1)
-    toptrack = requests.get('https://api.spotify.com/v1/artists/%s/top-tracks' %
-                            artists[rand_artist], headers=headers, params={'market': 'US'})
-    toptrack_json = toptrack.json()
-    print(toptrack.status_code)
-    rand_song = random.randint(0, len(toptrack_json['tracks'])-1)
-    song_info = toptrack_json['tracks'][rand_song]
-    name = song_info['name']
+    try:
+        toptrack = requests.get('https://api.spotify.com/v1/artists/%s/top-tracks' %
+                                artists[rand_artist], headers=headers, params={'market': 'US'})
+        toptrack_json = toptrack.json()
+        rand_song = random.randint(0, len(toptrack_json['tracks'])-1)
+        song_info = toptrack_json['tracks'][rand_song]
+        name = song_info['name']
+    except:
+          return flask.render_template("error.html", error_state='Failed to get the song\'s infomation!') 
     # search for the lyrics
     genius_search_url = f"http://api.genius.com/search?q={name}&access_token={genius_access_token}"
-    lyrics = requests.get(genius_search_url)
-    lyrics_json = lyrics.json()
-    lyrics_url = lyrics_json['response']['hits'][0]['result']['url']
+    try:
+        lyrics = requests.get(genius_search_url)
+        lyrics_json = lyrics.json()
+        lyrics_url = lyrics_json['response']['hits'][0]['result']['url']
+    except:
+        return flask.render_template("error.html", error_state='Failed to fetch the lyrics page!') 
     # its song name, song artist, song-related image, song preview URL
     return flask.render_template("index.html", name=name, artist=song_info['album']['artists'][0]['name'],
                                  preview=song_info['preview_url'], img=song_info['album']['images'][0]['url'],
@@ -60,5 +65,7 @@ def main():
 
 
 app.run(
+    host=os.getenv('IP', '0.0.0.0'),
+    port=int(os.getenv('PORT', 8080)),
     debug=True
 )
