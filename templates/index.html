@@ -10,10 +10,7 @@
     {% if preview|string() != 'None'|string() %}
     <figure>
       <figcaption>Listen to the preview:</figcaption>
-      <audio
-        controls
-        src="{{preview}}"
-      >
+      <audio controls src="{{preview}}">
         Your browser does not support the
         <code>audio</code> element.
       </audio>
@@ -23,6 +20,8 @@
       <p>Preview is not available</p>
     </div>
     {% endif %}
-    <p class="lyrics">Click here to see the lyrics!</p>
+    <div class="lyrics">
+      <a href="{{lyrics_url}}">Click here to see the lyrics!</a>
+    </div>
   </body>
 </html>

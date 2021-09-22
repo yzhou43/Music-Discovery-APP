@@ -57,13 +57,13 @@ figcaption {
     font-family: URW Chancery L, cursive;
     border: double white;
     width: 250px;
-    margin: 10px auto 0px;
+    margin: 20px auto;
     border-radius: 10px;
 }
 
 .preview p {
     margin: 5px;
-    font-size: 15px;
+    font-size: 17px;
     color: azure;
 }
 
