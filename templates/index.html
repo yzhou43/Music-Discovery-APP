@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>{{name}}</h1>
-    <p>{{artist}}</p>
+    <p class="artist">{{artist}}</p>
     <img src="{{img}}" alt="{{name}}" />
     {% if preview|string() != 'None'|string() %}
     <figure>
@@ -19,7 +19,9 @@
       </audio>
     </figure>
     {% else %}
-    <p>Preview is not available</p>
+    <div class="preview">
+      <p>Preview is not available</p>
+    </div>
     {% endif %}
     <p class="lyrics">Click here to see the lyrics!</p>
   </body>
