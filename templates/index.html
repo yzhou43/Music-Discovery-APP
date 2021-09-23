@@ -5,8 +5,15 @@
   </head>
   <body>
     <h1>{{name}}</h1>
+    {% if artist|string() == name_genius|string() %}
+    <a class="artist" href="{{artist_url}}"
+      ><p>{{artist}}</p>
+      <span><img class="artist_img" src="{{artist_img}}" alt="" /></span
+    ></a>
+    {% else %}
     <p class="artist">{{artist}}</p>
-    <img src="{{img}}" alt="{{name}}" />
+    {% endif %}
+    <img class="song_img" src="{{img}}" alt="{{name}}" />
     {% if preview|string() != 'None'|string() %}
     <figure>
       <figcaption>Listen to the preview:</figcaption>

@@ -30,10 +30,26 @@ h1 {
 .artist {
     font-family: URW Chancery L, cursive;
     font-size: 18px;
-    margin: 10px;
 }
 
-img {
+.artist span { 
+	position:absolute;
+	visibility:hidden;
+}
+
+.artist:hover, .artist:hover span { 
+	visibility:visible;
+    top: 60px;
+    left: 300px;
+	z-index:1;
+}
+
+.artist_img {
+    width: 200px;
+    border-radius: 100px;
+}
+	
+.song_img {
     border: 3px solid #ddd;
     border-radius: 50px;
     padding: 5px;
