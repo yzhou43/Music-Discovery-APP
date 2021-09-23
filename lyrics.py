@@ -1,8 +1,9 @@
 import flask
 import requests
+import os
 
 # use the genius api
-genius_access_token = '4paquYljmAe_uvMWGtnGa8ebLJgUHwVM7ite6KxlLMizZonJj6nOQcdYO7Tj80qq'
+genius_access_token = os.getenv("genius_access_token")
 
 # search for the lyrics
 def genius(name):    
