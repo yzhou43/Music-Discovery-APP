@@ -1,4 +1,6 @@
 # Music Discovery APP
+The app can be found at https://music-discovery-app-yzhou43.herokuapp.com/
+
 ## Part 1: How to set up and run
 ### Create account for APIs
 1. Create account in `https://developer.spotify.com/` and create a new app
@@ -23,7 +25,8 @@ of the first one. If the first answer is not correct, then check the following o
 3. I hope to add user input as an additional feature if I have more time. The users will be allowed to choose which artist they want to listen to, and then the app will display the 
 artist's song in random.
 ## Part 3: Technical issues I've solved
-1. One problem I had is the Genius search API may offer incorrect artist's image to the song, and it's weird if the user hovers on the name of artist A, but the app shows picture of artist B.
+1. I first failed to push my code to Heroku using `git push heroku main`, then I found this link `https://stackoverflow.com/questions/26595874/i-want-make-push-and-get-error-src-refspec-master-does-not-match-any`, and used the command `git push heroku HEAD:master` instead.
+2. One problem I had is the Genius search API may offer incorrect artist's image to the song, and it's weird if the user hovers on the name of artist A, but the app shows picture of artist B.
 So I compare the artist's name fetched from Spotify API and Genius API, if these two are different, then the picture and link of the song's artist won't be displayed.
-2. I tried to create a artist's picture that only shows when the user hovers in the artist's name but I was not sure what to do. Thhen I searched online and found the webpage `https://www.websitecodetutorials.com/code/photo-galleries/css-popup-image.php`, 
+3. I tried to create a artist's picture that only shows when the user hovers in the artist's name but I was not sure what to do. Thhen I searched online and found the webpage `https://www.websitecodetutorials.com/code/photo-galleries/css-popup-image.php`, 
 which is useful for me to write the css of the picture.
