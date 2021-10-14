@@ -15,6 +15,7 @@ load_dotenv(find_dotenv())
 app = flask.Flask(__name__)
 app.secret_key = os.environ.get("SECRET")
 
+
 # Configure database
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
 if uri.startswith("postgres://"):
@@ -22,6 +23,10 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 db = SQLAlchemy(app)
 
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
+    
 # Configure flask login
 login = LoginManager(app)
 login.init_app(app)
