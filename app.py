@@ -86,7 +86,8 @@ def index():
         elif Artist.query.filter_by(
             artistid=artist_id, user_id=current_user.id
         ).first():
-            flask.flash("The artist ID is already saved!")
+            # flask.flash("The artist ID is already saved!")
+            pass
         else:
             # Add favorite artists
             artist_new = Artist(artistid=artist_id, user_id=current_user.id)
