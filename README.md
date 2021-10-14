@@ -9,13 +9,20 @@ The app can be found at https://music-discovery-app-yzhou43.herokuapp.com/
 ### Install Requirements
 1. `pip install python-dotenv`  
 2. `pip install requests`  
-3. `pip3 install flask`  
+3. `pip install flask`  
+4. install flask_login using `pip install flask-login`
+5. install flask_sqlalchemy using `pip install -U Flask-SQLAlchemy`
+6. install flask_wtf using `pip install -U Flask-WTF`
+7. install wtforms using `pip install -U WTForms`
+8. install psycopg2 using `psycopg2`
 ### Set up
 1. Create `.env` file inside the project directory  
 2. Write the client ID and client secret of Spotify developer API, and the access token of Genius API in the `.env` file as following:  
 CLIENT_SECRET = 'YOUR_SECRET'  
-CLIENT_ID = 'YOUR_ID'  
-genius_access_token = 'YOUR_TOKEN'
+CLIENT_ID = 'YOUR_ID'    
+genius_access_token = 'YOUR_TOKEN'  
+DATABASE_URL = 'YOUR_DATABASE_URL'   
+SECRET = 'YOUR_SECRET'   
 ### Run Application
 Use command `python3 app.py`
 
