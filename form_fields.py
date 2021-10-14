@@ -18,14 +18,14 @@ def check_login(form, field):
     elif password != user_data.password:
         raise ValidationError("Username or password is incorrect")
 
+
 # Check if the username already exists
 def check_username(form, field):
     username = field.data
     user_object = User.query.filter_by(username=username).first()
     if user_object:
-        raise ValidationError(
-            "Username already exists! Please choose a different one."
-        )
+        raise ValidationError("Username already exists! Please choose a different one.")
+
 
 class SignupForm(FlaskForm):
 
@@ -42,9 +42,7 @@ class SignupForm(FlaskForm):
 
 class LoginForm(FlaskForm):
 
-    username = StringField(
-        "username", validators=[InputRequired()]
-    )
+    username = StringField("username", validators=[InputRequired()])
     password = PasswordField(
         "password",
         validators=[InputRequired(), check_login],

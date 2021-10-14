@@ -25,6 +25,7 @@ access_token = auth_response_data["access_token"]
 
 headers = {"Authorization": "Bearer {token}".format(token=access_token)}
 
+
 def get_tracks(artist):
     # Get an Artist's Top Tracks
     try:

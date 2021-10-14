@@ -80,15 +80,12 @@ def logout():
 def index():
     if flask.request.method == "POST":
         artist_id = flask.request.form.get("artist_id")
-    
         # Check if the input is correct
         if not get_tracks(artist_id):
             flask.flash("The artist ID is incorrect!")
-        elif (
-            Artist.query.filter_by(artistid=artist_id).first()
-            and Artist.query.filter_by(artistid=artist_id).first().user_id
-            == current_user.id
-        ):
+        elif Artist.query.filter_by(
+            artistid=artist_id, user_id=current_user.id
+        ).first():
             flask.flash("The artist ID is already saved!")
         else:
             # Add favorite artists
