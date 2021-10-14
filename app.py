@@ -1,5 +1,6 @@
 import flask
 import os
+import re
 import random
 from dotenv import find_dotenv, load_dotenv
 from lyrics import genius
@@ -15,7 +16,10 @@ app = flask.Flask(__name__)
 app.secret_key = os.environ.get("SECRET")
 
 # Configure database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
 db = SQLAlchemy(app)
 
 # Configure flask login
