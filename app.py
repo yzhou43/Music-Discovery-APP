@@ -1,5 +1,6 @@
 import flask
 import os
+import random
 from dotenv import find_dotenv, load_dotenv
 from lyrics import genius
 from top_tracks import get_tracks
@@ -10,25 +11,25 @@ from models import *
 
 load_dotenv(find_dotenv())
 
-artists = ["06HL4z0CvFAxyc27GXpf02", "43ZHCT0cAZBISjO8DG9PnE", "41MozSoPIsD1dJM0CLPjZF"]
-
 app = flask.Flask(__name__)
-app.secret_key=os.environ.get('SECRET')
+app.secret_key = os.environ.get("SECRET")
 
 # Configure database
-app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get('DATABASE_URL')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 db = SQLAlchemy(app)
 
 # Configure flask login
 login = LoginManager(app)
 login.init_app(app)
 
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
+
 # The sign up page
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def signup():
 
     signup_form = SignupForm()
@@ -43,13 +44,13 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        flask.flash('You were successfully signed up! Please log in.')
-        return flask.redirect(flask.url_for('login'))
+        flask.flash("You were successfully signed up! Please log in.")
+        return flask.redirect(flask.url_for("login"))
 
     return flask.render_template("signup.html", form=signup_form)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
 
     login_form = LoginForm()
@@ -59,28 +60,59 @@ def login():
         user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
         if current_user.is_authenticated:
-            return current_user.username
-            # return flask.redirect(flask.url_for('index'))
+            return flask.redirect(flask.url_for("index"))
         else:
             return "Failed to log in"
 
     return flask.render_template("login.html", form=login_form)
 
+
 # User log out
-@app.route("/logout", methods=['GET'])
+@app.route("/logout", methods=["GET"])
 def logout():
 
     logout_user()
-    flask.flash('You have logged out successfully')
-    return flask.redirect(flask.url_for('login'))
-    
+    flask.flash("You have logged out successfully")
+    return flask.redirect(flask.url_for("login"))
 
 
-
-@app.route("/index")
+@app.route("/index", methods=["GET", "POST"])
 def index():
+    if flask.request.method == "POST":
+        artist_id = flask.request.form.get("artist_id")
+    
+        # Check if the input is correct
+        if not get_tracks(artist_id):
+            flask.flash("The artist ID is incorrect!")
+        elif (
+            Artist.query.filter_by(artistid=artist_id).first()
+            and Artist.query.filter_by(artistid=artist_id).first().user_id
+            == current_user.id
+        ):
+            flask.flash("The artist ID is already saved!")
+        else:
+            # Add favorite artists
+            artist_new = Artist(artistid=artist_id, user_id=current_user.id)
+            db.session.add(artist_new)
+            db.session.commit()
+
+    if not Artist.query.filter_by(user_id=current_user.id).first():
+        return flask.render_template(
+            "index.html",
+            empty=True,
+            user=current_user.username,
+        )
+
+    artists_list = Artist.query.filter_by(user_id=current_user.id).all()
+    artists = []
+    for item in artists_list:
+        artists.append(item.artistid)
+
+    rand_artist = random.randint(0, len(artists) - 1)
+    artist = artists[rand_artist]
+
     # Get an Artist's Top Tracks
-    song_info = get_tracks(artists)
+    song_info = get_tracks(artist)
     name = song_info["name"]
 
     # use the genius API
@@ -88,6 +120,7 @@ def index():
     # its song name, song artist, song-related image, song preview URL
     return flask.render_template(
         "index.html",
+        user=current_user.username,
         name=name,
         artist=song_info["album"]["artists"][0]["name"],
         preview=song_info["preview_url"],
@@ -96,6 +129,7 @@ def index():
         artist_img=artist_img,
         artist_url=artist_url,
         name_genius=name_genius,
+        empty=False,
     )
 
 

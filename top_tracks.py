@@ -1,4 +1,3 @@
-import flask
 import requests
 import os
 import random
@@ -26,12 +25,11 @@ access_token = auth_response_data["access_token"]
 
 headers = {"Authorization": "Bearer {token}".format(token=access_token)}
 
-def get_tracks(artists):
+def get_tracks(artist):
     # Get an Artist's Top Tracks
-    rand_artist = random.randint(0, len(artists) - 1)
     try:
         toptrack = requests.get(
-            "https://api.spotify.com/v1/artists/%s/top-tracks" % artists[rand_artist],
+            "https://api.spotify.com/v1/artists/%s/top-tracks" % artist,
             headers=headers,
             params={"market": "US"},
         )
@@ -39,7 +37,5 @@ def get_tracks(artists):
         rand_song = random.randint(0, len(toptrack_json["tracks"]) - 1)
         song_info = toptrack_json["tracks"][rand_song]
     except:
-        return flask.render_template(
-            "error.html", error_state="Failed to get the song's infomation!"
-        )
+        return None
     return song_info

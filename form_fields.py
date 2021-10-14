@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, ValidationError
 
-from models import User
+from models import *
 
 # Check the login input
 def check_login(form, field):

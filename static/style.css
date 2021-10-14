@@ -53,12 +53,12 @@ h1 {
     border: 3px solid #ddd;
     border-radius: 50px;
     padding: 5px;
-    width: 400px;
+    width: 300px;
 }
 
 figure {
     margin: 15px auto;
-    width: 400px;
+    width: 300px;
 }
 
 figcaption {
@@ -90,4 +90,25 @@ audio {
 .lyrics {
     font-size: 25px;
     font-family: cursive;
+}
+
+.logout {
+    position: fixed;
+    top: 5px;
+    left: 30px;
+    font-size: 20px;
+    font-style: italic;
+}
+
+.art_form {
+    margin-top: 15px;
+}
+
+.art_form label {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.art_input {
+    margin: 10px;
 }

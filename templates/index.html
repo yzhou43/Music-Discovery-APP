@@ -1,34 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href={{ url_for('static', filename='style.css')}} />
-  </head>
-  <body>
-    <h1>{{name}}</h1>
-    {% if artist|string() == name_genius|string() %}
-    <a class="artist" href="{{artist_url}}"
-      ><p>{{artist}}</p>
-      <span><img class="artist_img" src="{{artist_img}}" alt="" /></span
-    ></a>
-    {% else %}
-    <p class="artist">{{artist}}</p>
-    {% endif %}
-    <img class="song_img" src="{{img}}" alt="{{name}}" />
-    {% if preview|string() != 'None'|string() %}
-    <figure>
-      <figcaption>Listen to the preview:</figcaption>
-      <audio controls src="{{preview}}">
-        Your browser does not support the
-        <code>audio</code> element.
-      </audio>
-    </figure>
-    {% else %}
-    <div class="preview">
-      <p>Preview is not available</p>
+
+<head>
+  <link rel="stylesheet" href={{ url_for('static', filename='style.css' )}} />
+  <h1>song explorer for {{user}}</h1>
+  <p class="logout"><a href={{url_for('logout')}}>Log out</a></p>
+</head>
+
+<body>
+  {% if empty %}
+  <h1>No saved artists! Use the form below!</h1>
+  {% else %}
+  <h2>{{name}}</h2>
+  {% if artist|string() == name_genius|string() %}
+  <a class="artist" href="{{artist_url}}">
+    <p>{{artist}}</p>
+    <span><img class="artist_img" src="{{artist_img}}" alt="" /></span>
+  </a>
+  {% else %}
+  <p class="artist">{{artist}}</p>
+  {% endif %}
+  <img class="song_img" src="{{img}}" alt="{{name}}" />
+  {% if preview|string() != 'None'|string() %}
+  <figure>
+    <figcaption>Listen to the preview:</figcaption>
+    <audio controls src="{{preview}}">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+  </figure>
+  {% else %}
+  <div class="preview">
+    <p>Preview is not available</p>
+  </div>
+  {% endif %}
+  <div class="lyrics">
+    <a href="{{lyrics_url}}">Click here to see the lyrics!</a>
+  </div>
+  {% endif %}
+  <form action="{{ url_for('index') }}" , method="POST" , class="art_form">
+    <label for="artist_id">Your favorite artist's ID:</label><br>
+    <div class="art_input">
+      <input type="text" name="artist_id">
+      <input type="submit" value="Save">
     </div>
-    {% endif %}
-    <div class="lyrics">
-      <a href="{{lyrics_url}}">Click here to see the lyrics!</a>
-    </div>
-  </body>
+  </form>
+</body>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class=flashes>
+  {% for message in messages %}
+  <p>{{ message }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
 </html>
