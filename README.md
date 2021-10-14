@@ -1,4 +1,5 @@
 # Music Discovery APP
+## Milestone1 and Milestone2
 The app can be found at https://music-discovery-app-yzhou43.herokuapp.com/
 
 ## Part 1: How to set up and run
@@ -17,10 +18,25 @@ CLIENT_ID = 'YOUR_ID'
 genius_access_token = 'YOUR_TOKEN'
 ### Run Application
 Use command `python3 app.py`
+
+# Milestone2
+## Part 2: Existing problems
+1. The process time is too long after the user input their favorite artist's ID and click on the 'sava' button. The program may take several seconds to process the artist's ID adding, and one of the reasons why it's slow is that the program has to check the ID using several functions, and call the Spotify API to see if the artist's ID is valid, which requires time. 
+2. After reload the music discover page, the form inside the page will be submitted again, and the POST method will also be called again. One possible solution is to apply the Post/Redirect/Get(PRG) pattern for the programs, and I will fix the program if I have more time.
+3. The relationship between the tables inside the database is not well designed. I'm not very familiar with the database, so I have to use the naive way to store the information inside the database, and it should be improved in the future.
+
+## Part 3: Technical issues I've solved
+1. I planed to create a login system with both username and password, but I was not sure where to start at first. I learned about how to build the login pages from the youtube tutorial `https://www.youtube.com/watch?v=pvUUidK1zuw&t=0s`.
+2. I use the flask wtform to build my login system. However, when I first wrote the login pages, it could not run success and showed error message related to CSRF Protection. I checked answers on stackoverflow and then added {{ form.csrf_token }} to the end of my html page. The detailed theory to do this is complicated, but I know it's related to security reason, and I have to add this code to make my programs work.
+3. First I allowed the users the save the artist's ID as long as the ID is valid and can fetch data from Spotify API, but the result for this design is that there could be many same data stored inside the database. So I then added the ID checker `Artist.query.filter_by(artistid=artist_id, user_id=current_user.id).first()` to make sure that duplicated data would not be added to the database.
+
+## Part 4: Difference between planning and reality
+Building the login system is harder than I thought, and it took me much longer time than I expected. I think it's because that I'm not familiar with database, so I have to spend a lot of time dealing with unexpected errors. 
+
+# Milestone1
 ## Part 2: Existing problems
 1. In my current app, I use the Genius API to search for the song's artist, and then display the artist's image and provide the artist's url. However, the Genius search API sometimes 
-gives the first answer as an incorrect one, and the correct answer maybe in the latter. Hence, if I have more time, I will try to use not only the first answer, but check the correctness 
-of the first one. If the first answer is not correct, then check the following ones until find the real result for the song.  
+gives the first answer as an incorrect one, and the correct answer maybe in the latter. Hence, if I have more time, I will try to use not only the first answer, but check the correctness of the first one. If the first answer is not correct, then check the following ones until find the real result for the song.  
 2. The progress bar for the music player does not correspond to the actual progress of the music.
 3. I hope to add user input as an additional feature if I have more time. The users will be allowed to choose which artist they want to listen to, and then the app will display the 
 artist's song in random.
